@@ -1,0 +1,128 @@
+{
+    "mode": "All",
+    "policyRule": {
+        "if": {
+            "allOf": [
+                {
+                    "field": "type",
+                    "equals": "Microsoft.Logic/workflows"
+                },
+                {
+                    "field": "kind",
+                    "equals": "Stateful"
+                },
+                {
+                    "anyOf": [
+                        {
+                            "field": "tags['Environment']",
+                            "equals": "SIT"
+                        },
+                        {
+                            "field": "tags['Environment']",
+                            "equals": "DEV"
+                        }
+                    ]
+                }
+            ]
+        },
+        "then": {
+            "if": {
+                "anyOf": [
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.triggers[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.triggers[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
+                    },
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "then": {
+                "effect": "audit"
+            }
+        }
+    },
+    "else": {
+        "if": {
+            "allOf": [
+                {
+                    "field": "type",
+                    "equals": "Microsoft.Logic/workflows"
+                },
+                {
+                    "field": "kind",
+                    "equals": "Stateful"
+                },
+                {
+                    "not": {
+                        "anyOf": [
+                            {
+                                "field": "tags['Environment']",
+                                "equals": "SIT"
+                            },
+                            {
+                                "field": "tags['Environment']",
+                                "equals": "DEV"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "then": {
+            "if": {
+                "anyOf": [
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.triggers[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.triggers[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
+                    },
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "then": {
+                "effect": "deny"
+            }
+        }
+    },
+    "parameters": {},
+    "metadata": {
+        "category": "Logic Apps",
+        "version": "1.0.0"
+    }
+}
