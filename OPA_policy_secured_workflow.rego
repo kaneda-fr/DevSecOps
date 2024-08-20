@@ -1,6 +1,6 @@
 package logicapp.security
 
-# Check if the secureData properties for inputs and outputs are present and configured correctly.
+# Check if the secureData properties for both inputs and outputs are present and configured correctly.
 is_secure(resource) {
     resource.runtimeConfiguration.secureData.properties[_] == "inputs"
     resource.runtimeConfiguration.secureData.properties[_] == "outputs"
@@ -58,3 +58,12 @@ violation[msg] {
     not compliant
     msg := "Some triggers or actions in the Logic App workflow are missing secured inputs or outputs."
 }
+
+/* 
+    OPA Policy for auditing secure inputs and outputs in Azure Logic Apps
+    - Recursively checks all triggers and actions, including nested structures
+    - Ensures that 'secureData' properties for both inputs and outputs are configured
+
+    Author: Sebastien Lacoste-seris
+    Copyright (c) 2024 Sebastien Lacoste-seris. All rights reserved.
+*/
