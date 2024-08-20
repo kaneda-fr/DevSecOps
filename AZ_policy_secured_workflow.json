@@ -1,7 +1,6 @@
 {
     "mode": "All",
     "policyRule": {
-        // The policy rule defines conditions and effects for compliance checks
         "if": {
             "allOf": [
                 {
@@ -27,7 +26,6 @@
             ]
         },
         "then": {
-            // Audit if secureData is not configured properly in SIT or DEV environments
             "if": {
                 "anyOf": [
                     {
@@ -50,6 +48,54 @@
                             },
                             {
                                 "field": "Microsoft.Logic/workflows/definition.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
+                    },
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
+                    },
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].else.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].else.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
+                    },
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].foreach.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].foreach.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
+                    },
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].cases[*].actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].cases[*].actions[*].runtimeConfiguration.secureData.properties",
                                 "notContains": "outputs"
                             }
                         ]
@@ -89,7 +135,6 @@
             ]
         },
         "then": {
-            // Deny the Logic App if secureData is not configured outside SIT or DEV environments
             "if": {
                 "anyOf": [
                     {
@@ -115,6 +160,54 @@
                                 "notContains": "outputs"
                             }
                         ]
+                    },
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
+                    },
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].else.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].else.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
+                    },
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].foreach.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].foreach.actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
+                    },
+                    {
+                        "allOf": [
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].cases[*].actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "inputs"
+                            },
+                            {
+                                "field": "Microsoft.Logic/workflows/definition.actions[*].cases[*].actions[*].runtimeConfiguration.secureData.properties",
+                                "notContains": "outputs"
+                            }
+                        ]
                     }
                 ]
             },
@@ -131,9 +224,9 @@
 }
 
 /* 
-    Azure Policy for ensuring secure inputs and outputs in stateful Logic Apps
+    Azure Policy for ensuring secure inputs and outputs in stateful Logic Apps with nested configurations
     - Applies an audit or deny effect based on the 'Environment' tag value
-    - Ensures 'secureData' properties for both inputs and outputs are configured
+    - Ensures 'secureData' properties for both inputs and outputs are configured in all actions, including nested actions
 
     Author: Sebastien Lacoste-seris
     Copyright (c) 2024 Sebastien Lacoste-seris. All rights reserved.
