@@ -1,6 +1,7 @@
 {
     "mode": "All",
     "policyRule": {
+        // The policy rule defines conditions and effects for compliance checks
         "if": {
             "allOf": [
                 {
@@ -26,6 +27,7 @@
             ]
         },
         "then": {
+            // Audit if secureData is not configured properly in SIT or DEV environments
             "if": {
                 "anyOf": [
                     {
@@ -87,6 +89,7 @@
             ]
         },
         "then": {
+            // Deny the Logic App if secureData is not configured outside SIT or DEV environments
             "if": {
                 "anyOf": [
                     {
@@ -126,3 +129,12 @@
         "version": "1.0.0"
     }
 }
+
+/* 
+    Azure Policy for ensuring secure inputs and outputs in stateful Logic Apps
+    - Applies an audit or deny effect based on the 'Environment' tag value
+    - Ensures 'secureData' properties for both inputs and outputs are configured
+
+    Author: Sebastien Lacoste-seris
+    Copyright (c) 2024 Sebastien Lacoste-seris. All rights reserved.
+*/
